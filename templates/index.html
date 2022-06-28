@@ -5,13 +5,28 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Index</title>
-    <link rel="stylesheet" href="./css/index.css">
 </head>
 <body>
     <h1>Hello world</h1>
-    <h1>{{ title }}</h1>
+    <h1>{{ method }} method</h1>
     <form action="" method="post">
-        <label for=""><input type="text"></label>
+        <fieldset>
+            <legend>Зарегистрируйтесь</legend>
+            <p><label class="title" for="name">Ваше имя:</label>
+                 <input type="text" name="name" id="name"><br />
+                 <label class="title" for="email">Ваш email:</label>
+                 <input type="text" name="email" id="email"></p>
+            <p><label for="location" class="title">Ближайший центр:</label>
+                 <select name="location" id="location">
+                     <option value="ny">Москва</option>
+                     <option value="il">Санкт-Петербург</option>
+                     <option value="ca">Екатеринбург</option>
+                 </select></p>
+            <span class="title">Являетесь участником?</span>
+            <label><input type="radio" name="member" value="yes" /> Да</label>
+            <label><input type="radio" name="member" value="no" /> Нет</label></p>
+        </fieldset>
+     <div class="submit"><input type="submit" value="Регистрация" /></div>
     </form>
 </body>
 </html>
