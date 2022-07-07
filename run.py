@@ -1,6 +1,6 @@
 from even_framework.main import Framework
 from wsgiref.simple_server import make_server
-from urls import urls
+from views import urls
 
 application = Framework(urls)
 
