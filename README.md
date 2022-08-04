@@ -14,4 +14,4 @@
     * `pip install -r requirements.txt`
   * Инициирование wsgi сервера
     * `python3 run.py`
-
+Сервер будет доступен по адресу http://localhost:8000/
