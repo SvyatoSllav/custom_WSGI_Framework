@@ -4,9 +4,11 @@ from even_framework.templator import render
 
 from components.models import Engine
 from components.decorators import AppRoute
+from components.generics_views import CreateView, ListView
 
 site = Engine()
 urls = {}
+
 
 # Класс-контроллер - Главная страница
 @AppRoute(routes=urls, url='/')
@@ -87,6 +89,7 @@ class CreateCourse:
             except KeyError:
                 return '200 OK', 'No categories have been added yet'
 
+
 # Класс-контроллер - Страница "Создать категорию"
 @AppRoute(routes=urls, url='/create-category/')
 class CreateCategory:
@@ -127,3 +130,42 @@ class CategoryList:
 
         return '200 OK', render('category_list.html',
                                 objects_list=site.categories)
+
+
+@AppRoute(routes=urls, url='/student-list/')
+class StudentListView(ListView):
+    queryset = site.students
+    template_name = 'student_list.html'
+
+
+@AppRoute(routes=urls, url='/create-student/')
+class StudentCreateView(CreateView):
+    template_name = 'create_student.html'
+
+    def create_obj(self, data):
+        name = data['name']
+        print(name)
+        name = site.decode_value(name)
+        print(name)
+        new_student = site.create_user('student', name)
+        site.students.append(new_student)
+
+
+@AppRoute(routes=urls, url='/add-student/')
+class AddStudentByCourseCreateView(CreateView):
+    template_name = 'add_student.html'
+
+    def get_context_data(self):
+        context = super().get_context_data()
+        context['courses'] = site.courses
+        context['students'] = site.students
+        return context
+
+    def create_obj(self, data: dict):
+        course_name = data['course_name']
+        course_name = site.decode_value(course_name)
+        course = site.get_course(course_name)
+        student_name = data['student_name']
+        student_name = site.decode_value(student_name)
+        student = site.get_student(student_name)
+        course.add_student(student)

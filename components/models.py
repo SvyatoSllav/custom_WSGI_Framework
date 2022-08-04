@@ -3,12 +3,15 @@ import quopri
 
 # Abstract user class
 class User:
-    pass
+    def __init__(self, name) -> None:
+        self.name = name
 
 
 # Student class
 class Student(User):
-    pass
+    def __init__(self, name) -> None:
+        self.courses = []
+        super().__init__(name)
 
 
 # Teacher class
@@ -25,8 +28,8 @@ class UserFactory:
     }
 
     @classmethod
-    def create_user(cls, type_):
-        return cls.types[type_]()
+    def create_user(cls, type_, name):
+        return cls.types[type_](name)
 
 
 class Category:
@@ -56,6 +59,15 @@ class Course:
         self.name = name
         self.category = category
         self.category.courses.append(self)
+        self.students = []
+        super().__init__()
+
+    def __getitem__(self, item):
+        return self.students[item]
+
+    def add_student(self, student: Student):
+        self.students.append(student)
+        student.courses.append(self)
 
 
 class InteractiveCourse(Course):
@@ -86,8 +98,8 @@ class Engine:
         self.categories = []
 
     @staticmethod
-    def create_user(type_):
-        return UserFactory.create(type_)
+    def create_user(type_, name):
+        return UserFactory.create_user(type_, name)
 
     @staticmethod
     def create_category(name, category=None):
@@ -108,7 +120,11 @@ class Engine:
         for item in self.courses:
             if item.name == name:
                 return item
-        return None
+
+    def get_student(self, name):
+        for item in self.students:
+            if item.name == name:
+                return item
 
     @staticmethod
     def decode_value(val):
